@@ -10,7 +10,7 @@ https://puni.sh/api/repository/croizat
 
 Rotation Solver's original developer, [ArchiTed](https://github.com/ArchiDog1998/), has quit XIV. The previous repository is located [here](https://github.com/ArchiDog1998/RotationSolver).
 
-Development of the plugin is now community maintained here. PRs are always welcome. My immediate goal is to overhaul the codebase so that it is easier to maintain and work on in the longterm since the original developer will be gone now. At the very least, I intend on keeping the plugin updated. Further feature development is unknown at this time.
+Development of the plugin is now community maintained here. PRs are always welcome. My immediate goal is to overhaul the codebase so that it is easier to maintain and work on in the longterm since the original developer will be gone now. At the very least, I intend on keeping the plugin updated.
 
 The discord situation is unknown at the time of writing but it's still up so the current ReadMe links ArchiTed set up will stay active here in the meantime.
 
