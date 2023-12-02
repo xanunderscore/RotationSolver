@@ -1,56 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <PackageIcon>Logo.png</PackageIcon>
-	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
-	  <PackageId>RotationSolver.Basic</PackageId>
-	  <Title>RotationSolver.Basic</Title>
-	  <RepositoryUrl>https://github.com/ArchiDog1998/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
-	  <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <ItemGroup>
-	  <Using Include="System.ComponentModel" />
-	  <Using Include="Dalamud.Game.ClientState.JobGauge.Types" />
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageIcon>Logo.png</PackageIcon>
+		<Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
+		<PackageId>RotationSolver.Basic</PackageId>
+		<Title>RotationSolver.Basic</Title>
+		<RepositoryUrl>https://github.com/Jaksuhn/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
 
-	  <Using Include="Dalamud.Game.ClientState.Objects.Types" />
+	<PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
+		<DalamudLibPath>$(DALAMUD_HOME)/</DalamudLibPath>
+	</PropertyGroup>
 
-	  <Using Include="RotationSolver.Basic" />
-	  <Using Include="RotationSolver.Basic.Actions" />
-	  <Using Include="RotationSolver.Basic.Attributes" />
-	  <Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
-	  <Using Include="RotationSolver.Basic.Data" />
-	  <Using Include="RotationSolver.Basic.Helpers" />
-	  <Using Include="RotationSolver.Basic.Rotations" />
-	  <Using Include="RotationSolver.Basic.Rotations.Basic" />
+	<PropertyGroup Condition="'$(OS)' != 'Windows_NT' OR '$(CI)' == 'true'">
+		<DalamudLibPath>$(DALAMUD_HOME)/</DalamudLibPath>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Using Include="System.ComponentModel" />
+		<Using Include="Dalamud.Game.ClientState.JobGauge.Types" />
 
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj">
-		  <PrivateAssets>all</PrivateAssets>
-	  </ProjectReference>
+		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
 
-	  <None Include="..\COPYING.LESSER">
+		<Using Include="RotationSolver.Basic" />
+		<Using Include="RotationSolver.Basic.Actions" />
+		<Using Include="RotationSolver.Basic.Attributes" />
+		<Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
+		<Using Include="RotationSolver.Basic.Data" />
+		<Using Include="RotationSolver.Basic.Helpers" />
+		<Using Include="RotationSolver.Basic.Rotations" />
+		<Using Include="RotationSolver.Basic.Rotations.Basic" />
+
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+
+		<None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
-      </None>
-      <None Include="..\Images\Logo.png">
+		</None>
+		<None Include="..\Images\Logo.png">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
-      </None>
-      <PackageReference Include="Svg" Version="3.4.4" />
-	  <None Update="README.md">
+		</None>
+		<PackageReference Include="Svg" Version="3.4.4" />
+		<None Update="README.md">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
-	  </None>
-  </ItemGroup>
+		</None>
+	</ItemGroup>
 </Project>
