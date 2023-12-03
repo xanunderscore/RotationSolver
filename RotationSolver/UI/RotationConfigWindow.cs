@@ -13,6 +13,7 @@ using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -28,6 +29,7 @@ namespace RotationSolver.UI;
 public partial class RotationConfigWindow : Window
 {
     private static float Scale => ImGuiHelpers.GlobalScale;
+    private static Job Job => DataCenter.Job;
 
     private RotationConfigWindowTab _activeTab;
 
@@ -492,11 +494,11 @@ public partial class RotationConfigWindow : Window
                     {
                         if( DataCenter.Territory?.IsPvpZone ?? false)
                         {
-                            Service.Config.GetJobConfig(DataCenter.Job).PvPRotationChoice = r.GetType().FullName;
+                            Service.Config.GetJobConfig(Job).PvPRotationChoice = r.GetType().FullName;
                         }
                         else
                         {
-                            Service.Config.GetJobConfig(DataCenter.Job).RotationChoice = r.GetType().FullName;
+                            Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
                         }
                         Service.Config.Save();
                     }
@@ -534,7 +536,7 @@ public partial class RotationConfigWindow : Window
 
                 foreach (var searchable in _searchResults)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
             else
@@ -1572,8 +1574,8 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationsSettings()
     {
-        _updateRotation?.Draw();
-        _autoLoadRotations?.Draw();
+        _updateRotation?.Draw(Job);
+        _autoLoadRotations?.Draw(Job);
     }
 
     private static void DrawRotationsLoaded()
@@ -2045,7 +2047,7 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
             foreach (var searchable in _listSearchable)
             {
-                searchable?.Draw();
+                searchable?.Draw(Job);
             }
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingAreaDesc);
 
@@ -2303,7 +2305,7 @@ public partial class RotationConfigWindow : Window
     {
         foreach (var searchable in _debugSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         if (!Player.Available || !Service.Config.GetValue(PluginConfigBool.InDebug)) return;

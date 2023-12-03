@@ -1,4 +1,5 @@
 ﻿using Dalamud.Utility;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -19,11 +20,6 @@ internal class DragIntSearchJob : DragIntSearch
     public override string Command => _config.ToCommand();
 
     protected override bool IsJob => true;
-    protected override int Value
-    {
-        get => Service.Config.GetValue(_config);
-        set => Service.Config.SetValue(_config, value);
-    }
 
     public DragIntSearchJob(JobConfigInt config, float speed)
         : base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
@@ -36,9 +32,19 @@ internal class DragIntSearchJob : DragIntSearch
     {
         _config = config;
     }
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
-        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
+        Service.Config.SetValue(job, _config, Service.Config.GetDefault(job, _config));
+    }
+
+    protected override int GetValue(Job job)
+    {
+        return Service.Config.GetValue(job, _config);
+    }
+
+    protected override void SetValue(Job job, int value)
+    {
+        Service.Config.SetValue(job, _config, value);
     }
 }
 
@@ -55,11 +61,6 @@ internal class DragIntSearchPlugin : DragIntSearch
     public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
-    protected override int Value
-    {
-        get => Service.Config.GetValue(_config);
-        set => Service.Config.SetValue(_config, value);
-    }
 
     public DragIntSearchPlugin(PluginConfigInt config, float speed)
         : base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
@@ -73,9 +74,19 @@ internal class DragIntSearchPlugin : DragIntSearch
         _config = config;
     }
 
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
         Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
+    }
+
+    protected override int GetValue(Job job)
+    {
+        return Service.Config.GetValue(_config);
+    }
+
+    protected override void SetValue(Job job, int value)
+    {
+        Service.Config.SetValue(_config, value);
     }
 }
 
@@ -85,8 +96,6 @@ internal abstract class DragIntSearch : Searchable
     public int Max { get; }
     public float Speed { get; }
     public Func<string[]> GetNames { get; }
-    protected abstract int Value { get; set; }
-
     public DragIntSearch(int min, int max, float speed)
     {
         Min = min; Max = max;
@@ -96,16 +105,18 @@ internal abstract class DragIntSearch : Searchable
     {
         GetNames = getNames;
     }
-    protected override void DrawMain()
+    protected abstract int GetValue(Job job);
+    protected abstract void SetValue(Job job, int value);
+    protected override void DrawMain(Job job)
     {
-        var value = Value;
+        var value = GetValue(job);
 
         if (GetNames != null && GetNames() is string[] strs && strs.Length > 0)
         {
             ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value % strs.Length]).X + 30, DRAG_WIDTH) * Scale);
             if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref value, strs, strs.Length))
             {
-                Value = value;
+                SetValue(job, value);
             }
         }
         else
@@ -113,15 +124,15 @@ internal abstract class DragIntSearch : Searchable
             ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
             if (ImGui.DragInt($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max))
             {
-                Value = value;
+                SetValue(job, value);
             }
         }
 
-        if (ImGui.IsItemHovered()) ShowTooltip();
+        if (ImGui.IsItemHovered()) ShowTooltip(job);
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();
         ImGui.TextWrapped(Name);
-        if (ImGui.IsItemHovered()) ShowTooltip(false);
+        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }
