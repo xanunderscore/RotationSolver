@@ -169,7 +169,7 @@ public partial class RotationConfigWindow
         ImGui.PopStyleColor();
         ImGui.PopFont();
 
-        var actionAhead = Service.Config.GetValue(JobConfigFloat.ActionAhead);
+        var actionAhead = Service.Config.GetValue(DataCenter.Job, JobConfigFloat.ActionAhead);
         var minAbilityAhead = Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced);
         var animationLockTime = DataCenter.MinAnimationLock;
         var weaponDelay = (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin) + Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)) / 2;
@@ -242,14 +242,14 @@ public partial class RotationConfigWindow
 
         foreach (var searchable in _basicTimer)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
         foreach (var searchable in _basicTimerOthers)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
     }
 
@@ -271,14 +271,14 @@ public partial class RotationConfigWindow
     {
         foreach (var searchable in _basicSwitchTurnOff)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
         foreach (var searchable in _basicSwitchTurnOn)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         _autoSwitch?.Draw();
@@ -338,7 +338,7 @@ public partial class RotationConfigWindow
     {
         foreach (var searchable in _basicParamsSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         if (Service.Config.GetValue(PluginConfigBool.SayHelloToAll))
@@ -435,7 +435,7 @@ public partial class RotationConfigWindow
             {
                 foreach (var searchable in _uiInformationSearchable)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
         },
@@ -443,7 +443,7 @@ public partial class RotationConfigWindow
             {
                 foreach (var searchable in _uiOverlaySearchable)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
         },
@@ -451,7 +451,7 @@ public partial class RotationConfigWindow
             {
                 foreach (var searchable in _uiWindowsSearchable)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
         },
@@ -573,7 +573,7 @@ public partial class RotationConfigWindow
 
                 foreach (var searchable in _autoActionUsageSearchable)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
         },
@@ -627,28 +627,28 @@ public partial class RotationConfigWindow
 
         foreach (var searchable in _autoActionConditionSearchable_General)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
         foreach (var searchable in _autoActionConditionSearchable_Heal)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
         foreach (var searchable in _autoActionConditionSearchable_Raise)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
         foreach (var searchable in _autoActionConditionSearchable_Others)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
     }
 
@@ -853,22 +853,22 @@ public partial class RotationConfigWindow
     {
         foreach (var searchable in _targetHostileSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
         ImGui.Separator();
         foreach (var searchable in _targetHostileSelectSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
         ImGui.Separator();
         foreach (var searchable in _targetMovingSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
         ImGui.Separator();
         foreach (var searchable in _targetOtherSearchable)
         {
-            searchable?.Draw();
+            searchable?.Draw(Job);
         }
     }
 
@@ -989,7 +989,7 @@ public partial class RotationConfigWindow
             {
                 foreach (var searchable in _extraSearchable)
                 {
-                    searchable?.Draw();
+                    searchable?.Draw(Job);
                 }
             }
         },

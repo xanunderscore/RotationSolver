@@ -4,7 +4,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -21,7 +20,7 @@ public abstract partial class CustomRotation
     public static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
 
@@ -281,22 +280,22 @@ public abstract partial class CustomRotation
         && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealTimeToKill));
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && CanUseHealAction;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && CanUseHealAction;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
 
@@ -314,28 +313,28 @@ public abstract partial class CustomRotation
     #region GCD
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected static float WeaponRemain => DataCenter.WeaponRemain;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected static float WeaponTotal => DataCenter.WeaponTotal;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected static ClientLanguage Language => Svc.ClientState.ClientLanguage;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
@@ -350,46 +349,46 @@ public abstract partial class CustomRotation
     public static bool IsInDuty => Svc.Condition[ConditionFlag.BoundByDuty];
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static float Ping => DataCenter.Ping;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public double AverageCountOfLastUsing { get; internal set; } = 0;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int MaxCountOfLastUsing { get; internal set; } = 0;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public double AverageCountOfCombatTimeUsing { get; internal set; } = 0;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int MaxCountOfCombatTimeUsing { get; internal set; } = 0;
     internal long CountOfTracking { get; set; } = 0;
@@ -568,51 +567,51 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The count down ahead.
     /// </summary>
-    public static float CountDownAhead => Service.Config.GetValue(PluginConfigFloat.CountDownAhead);
+    public static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthAreaAbility => Service.Config.GetValue(JobConfigFloat.HealthAreaAbility);
+    public float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthAreaSpell => Service.Config.GetValue(JobConfigFloat.HealthAreaSpell);
+    public float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthAreaAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthAreaAbilityHot);
+    public float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthAreaSpellHot => Service.Config.GetValue(JobConfigFloat.HealthAreaSpellHot);
+    public float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthSingleAbility => Service.Config.GetValue(JobConfigFloat.HealthSingleAbility);
+    public float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthSingleSpell => Service.Config.GetValue(JobConfigFloat.HealthSingleSpell);
+    public float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthSingleAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot);
+    public float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthSingleSpellHot => Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot);
+    public float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public static float HealthForDyingTanks => Service.Config.GetValue(JobConfigFloat.HealthForDyingTanks);
+    public float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
     #endregion
 }

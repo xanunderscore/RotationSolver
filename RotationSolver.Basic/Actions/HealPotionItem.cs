@@ -1,7 +1,6 @@
 ﻿using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -32,7 +31,8 @@ internal class HealPotionItem : BaseItem
     {
         item = null;
         if (!Player.Available) return false;
-        if (Player.Object.GetHealthRatio() > Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot)) return false;
+        var job = (Job)Player.Object.ClassJob.Id;
+        if (Player.Object.GetHealthRatio() > job.GetHealthSingleAbilityHot()) return false;
         if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item, clippingCheck);
     }

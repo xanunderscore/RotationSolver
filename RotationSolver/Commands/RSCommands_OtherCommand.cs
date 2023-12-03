@@ -38,6 +38,7 @@ public static partial class RSCommands
 
     private static void DoSettingCommand(string str)
     {
+        var job = DataCenter.Job;
         var strs = str.Split(' ');
         var value = strs.LastOrDefault();
         if (TryGetOneEnum<PluginConfigBool>(str, out var b))
@@ -59,14 +60,14 @@ public static partial class RSCommands
         }
         else if (TryGetOneEnum<JobConfigFloat>(str, out var f2) && float.TryParse(value, out f1))
         {
-            Service.Config.SetValue(f2, f1);
-            value = Service.Config.GetValue(f2).ToString();
+            Service.Config.SetValue(job, f2, f1);
+            value = Service.Config.GetValue(job, f2).ToString();
 
         }
         else if (TryGetOneEnum<JobConfigInt>(str, out var i2) && int.TryParse(value, out i1))
         {
-            Service.Config.SetValue(i2, i1);
-            value = Service.Config.GetValue(i2).ToString();
+            Service.Config.SetValue(job, i2, i1);
+            value = Service.Config.GetValue(job, i2).ToString();
         }
         else
         {

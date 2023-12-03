@@ -154,7 +154,7 @@ internal abstract class Searchable : ISearchable
 
     public virtual bool ShowInChild => true;
 
-    public unsafe void Draw()
+    public unsafe void Draw(Job job)
     {
         var filter = (DataCenter.Territory?.IsPvpZone ?? false) ? PvPFilter : PvEFilter;
 
@@ -189,16 +189,16 @@ internal abstract class Searchable : ISearchable
             return;
         }
 
-        DrawMain();
+        DrawMain(job);
 
-        ImGuiHelper.PrepareGroup(Popup_Key, Command, () => ResetToDefault());
+        ImGuiHelper.PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));
     }
 
-    protected abstract void DrawMain();
+    protected abstract void DrawMain(Job job);
 
-    public abstract void ResetToDefault();
+    public abstract void ResetToDefault(Job job);
 
-    protected void ShowTooltip(bool showHand = true)
+    protected void ShowTooltip(Job job, bool showHand = true)
     {
         var showDesc = !string.IsNullOrEmpty(Description);
         if (showDesc || Tooltips != null && Tooltips.Length > 0)
@@ -222,7 +222,7 @@ internal abstract class Searchable : ISearchable
             });
         }
 
-        ImGuiHelper.ReactPopup(Popup_Key, Command, ResetToDefault, showHand);
+        ImGuiHelper.ReactPopup(Popup_Key, Command, () => ResetToDefault(job), showHand);
     }
 
     protected static void DrawJobIcon()

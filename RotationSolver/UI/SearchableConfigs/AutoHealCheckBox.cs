@@ -7,7 +7,7 @@ namespace RotationSolver.UI.SearchableConfigs;
 
 internal class AutoHealCheckBox : CheckBoxSearchPlugin
 {
-    private readonly ISearchable[] _otherChildren;
+    private ISearchable[] _otherChildren;
 
     public AutoHealCheckBox(params ISearchable[] otherChildren)
         : base(PluginConfigBool.AutoHeal, otherChildren.Union(new ISearchable[]
@@ -36,11 +36,11 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
         _healthSingleSpell = new(JobConfigFloat.HealthSingleSpell, speed),
         _healthSingleSpellHot = new(JobConfigFloat.HealthSingleSpellHot, speed);
 
-    protected override void DrawChildren()
+    protected override void DrawChildren(Job job)
     {
         foreach (var child in _otherChildren)
         {
-            child.Draw();
+            child.Draw(job);
         }
 
         if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
@@ -65,11 +65,11 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextColumn();
 
-            _healthAreaAbility?.Draw();
+            _healthAreaAbility?.Draw(job);
 
             ImGui.TableNextColumn();
 
-            _healthAreaAbilityHot?.Draw();
+            _healthAreaAbilityHot?.Draw(job);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
@@ -77,12 +77,12 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextColumn();
 
-            _healthAreaSpell?.Draw();
+            _healthAreaSpell?.Draw(job);
 
 
             ImGui.TableNextColumn();
 
-            _healthAreaSpellHot?.Draw();
+            _healthAreaSpellHot?.Draw(job);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
@@ -90,11 +90,11 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextColumn();
 
-            _healthSingleAbility?.Draw();
+            _healthSingleAbility?.Draw(job);
 
             ImGui.TableNextColumn();
 
-            _healthSingleAbilityHot?.Draw();
+            _healthSingleAbilityHot?.Draw(job);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
@@ -102,11 +102,11 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextColumn();
 
-            _healthSingleSpell?.Draw();
+            _healthSingleSpell?.Draw(job);
 
             ImGui.TableNextColumn();
 
-            _healthSingleSpellHot?.Draw();
+            _healthSingleSpellHot?.Draw(job);
 
             ImGui.EndTable();
         }

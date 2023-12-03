@@ -17,17 +17,6 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
     protected override bool IsJob => true;
-    protected override int MinValue
-    {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
-    }
-
-    protected override int MaxValue
-    {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
-    }
 
     public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, float speed)
     : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
@@ -36,10 +25,30 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
         _configMax = configMax;
     }
 
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
-        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
-        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
+        Service.Config.SetValue(job, _configMin, Service.Config.GetDefault(job, _configMin));
+        Service.Config.SetValue(job, _configMax, Service.Config.GetDefault(job, _configMax));
+    }
+
+    protected override int GetMinValue(Job job)
+    {
+        return Service.Config.GetValue(job, _configMin);
+    }
+
+    protected override void SetMinValue(Job job, int value)
+    {
+        Service.Config.SetValue(job, _configMin, value);
+    }
+
+    protected override int GetMaxValue(Job job)
+    {
+        return Service.Config.GetValue(job, _configMax);
+    }
+
+    protected override void SetMaxValue(Job job, int value)
+    {
+        Service.Config.SetValue(job, _configMax, value);
     }
 }
 
@@ -56,18 +65,6 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
-    protected override int MinValue
-    {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
-    }
-
-    protected override int MaxValue
-    {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
-    }
-
     public DragIntRangeSearchPlugin(PluginConfigInt configMin, PluginConfigInt configMax, float speed)
         : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
@@ -75,10 +72,30 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
         _configMax = configMax;
     }
 
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
         Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
         Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
+    }
+
+    protected override int GetMinValue(Job job)
+    {
+        return Service.Config.GetValue(_configMin);
+    }
+
+    protected override void SetMinValue(Job job, int value)
+    {
+        Service.Config.SetValue(_configMin, value);
+    }
+
+    protected override int GetMaxValue(Job job)
+    {
+        return Service.Config.GetValue(_configMax);
+    }
+
+    protected override void SetMaxValue(Job job, int value)
+    {
+        Service.Config.SetValue(_configMax, value);
     }
 }
 
@@ -89,29 +106,32 @@ internal abstract class DragIntRangeSearch : Searchable
     public float Speed { get; init; }
 
     public sealed override string Command => "";
-    protected abstract int MinValue { get; set; }
-    protected abstract int MaxValue { get; set; }
+
     public DragIntRangeSearch(int min, int max, float speed)
     {
         Min = min; Max = max;
         Speed = speed;
     }
 
-    protected override void DrawMain()
+    protected abstract int GetMinValue(Job job);
+    protected abstract void SetMinValue(Job job, int value);
+    protected abstract int GetMaxValue(Job job);
+    protected abstract void SetMaxValue(Job job, int value);
+    protected override void DrawMain(Job job)
     {
-        var minValue = MinValue;
-        var maxValue = MaxValue;
+        var minValue = GetMinValue(job);
+        var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
         if (ImGui.DragIntRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
         {
-            MinValue = Math.Min(minValue, maxValue);
-            MaxValue = Math.Max(minValue, maxValue);
+            SetMinValue(job, Math.Min(minValue, maxValue));
+            SetMaxValue(job, Math.Max(minValue, maxValue));
         }
-        if (ImGui.IsItemHovered()) ShowTooltip();
+        if (ImGui.IsItemHovered()) ShowTooltip(job);
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();
         ImGui.TextWrapped(Name);
-        if (ImGui.IsItemHovered()) ShowTooltip(false);
+        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }

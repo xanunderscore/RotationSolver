@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -440,25 +441,15 @@ internal static partial class TargetUpdater
                        _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
-        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbility),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot));
+        var job = (Job)player.ClassJob.Id;
 
-        var singleSpell = ShouldHealSingle(StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot));
+        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot());
+        var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot());
 
         var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
-
-        DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbility),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot))
+        DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot())
             : singleAbility > 0;
-
-        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
-           Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot))
-            : singleSpell > 0;
-
+        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;
         DataCenter.CanHealAreaAbility = singleAbility > 2;
         DataCenter.CanHealAreaSpell = singleSpell > 2;
 
@@ -468,10 +459,10 @@ internal static partial class TargetUpdater
             var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots);
 
             if (!DataCenter.CanHealAreaAbility)
-                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(Service.Config.GetValue(JobConfigFloat.HealthAreaAbility), Service.Config.GetValue(JobConfigFloat.HealthAreaAbilityHot), ratio);
+                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
 
             if (!DataCenter.CanHealAreaSpell)
-                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(Service.Config.GetValue(JobConfigFloat.HealthAreaSpell), Service.Config.GetValue(JobConfigFloat.HealthAreaSpellHot), ratio);
+                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
         }
 
         //Delay
