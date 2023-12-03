@@ -435,8 +435,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
-        ActionOption.DutyAction | ActionOption.Friendly)
+    public static IBaseAction LostRampage { get; } = new RoleAction(ActionID.LostRampage
+        , new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical }
+        , ActionOption.DutyAction | ActionOption.Friendly)
     {
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
@@ -448,8 +449,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
-        ActionOption.DutyAction | ActionOption.Friendly)
+    public static IBaseAction LostBurst { get; } = new RoleAction(ActionID.LostBurst
+        , new JobRole[] { JobRole.Healer, JobRole.RangedMagical }
+        , ActionOption.DutyAction | ActionOption.Friendly)
     {
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
