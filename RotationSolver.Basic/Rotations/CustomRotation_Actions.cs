@@ -438,7 +438,6 @@ public abstract partial class CustomRotation
     public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostRampage },
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
                 ObjectHelper.CanInterrupt(tar) ||
@@ -452,7 +451,6 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBurst },
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
                 ObjectHelper.CanInterrupt(tar) ||
