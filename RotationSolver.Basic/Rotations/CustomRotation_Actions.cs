@@ -441,8 +441,9 @@ public abstract partial class CustomRotation
         StatusProvide = new StatusID[] { StatusID.LostRampage },
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
-               tar.HasStatus(false, StatusID.PhysicalAversion) &&
-               tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage))
+                ObjectHelper.CanInterrupt(tar) ||
+                (tar.HasStatus(false, StatusID.PhysicalAversion) &&
+                    tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage)))
     };
 
     /// <summary>
@@ -454,8 +455,9 @@ public abstract partial class CustomRotation
         StatusProvide = new StatusID[] { StatusID.LostBurst },
         ActionCheck = (b, m) =>
             DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
-               tar.HasStatus(false, StatusID.MagicalAversion) &&
-               tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst))
+                ObjectHelper.CanInterrupt(tar) ||
+                (tar.HasStatus(false, StatusID.MagicalAversion) &&
+                    tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst)))
     };
 
     /// <summary>
