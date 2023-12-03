@@ -439,7 +439,10 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostRampage },
-        ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+        ActionCheck = (b, m) =>
+            DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
+               tar.HasStatus(false, StatusID.PhysicalAversion) &&
+               tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage))
     };
 
     /// <summary>
@@ -449,7 +452,10 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostBurst },
-        ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        ActionCheck = (b, m) =>
+            DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
+               tar.HasStatus(false, StatusID.MagicalAversion) &&
+               tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst))
     };
 
     /// <summary>
