@@ -433,6 +433,18 @@ public abstract partial class CustomRotation
     };
 
     /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostAssassination { get; } = new RoleAction(
+        ActionID.LostAssassination,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical },
+        ActionOption.DutyAction
+    ) {
+        StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
+        ActionCheck = (b, m) => Player.HasStatus(false, StatusID.SpiritOfTheBeast) && HostileTarget.IsBossFromIcon()
+    };
+    
+    /// <summary>
     /// /
     /// </summary>
     public static IBaseAction LostRampage { get; } = new RoleAction(

@@ -2681,6 +2681,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    SixSidedStar = 16476,
+
+    /// <summary>
+    /// 
+    /// </summary>
     FlintStrike = 25882,
 
     /// <summary>
@@ -5202,6 +5207,11 @@ public enum ActionID : uint
     /// 
     /// </summary>
     LostBurst = 23909,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostAssassination = 23914,
 
     /// <summary>
     /// 

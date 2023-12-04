@@ -1361,6 +1361,16 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    SpiritOfTheBeast = 2324,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostFontOfPower = 2346,
+
+    /// <summary>
+    /// 
+    /// </summary>
     LostBurst = 2558,
 
     /// <summary>

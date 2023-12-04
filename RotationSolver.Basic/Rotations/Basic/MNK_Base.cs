@@ -118,6 +118,11 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
+    public static IBaseAction SixSidedStar { get; } = new BaseAction(ActionID.SixSidedStar);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ElixirField { get; } = new BaseAction(ActionID.ElixirField);
 
     /// <summary>
