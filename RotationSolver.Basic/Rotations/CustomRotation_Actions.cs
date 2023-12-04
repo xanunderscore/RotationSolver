@@ -433,31 +433,31 @@ public abstract partial class CustomRotation
     };
 
     /// <summary>
-    /// 
+    /// /
     /// </summary>
-    public static IBaseAction LostRampage { get; } = new RoleAction(ActionID.LostRampage
-        , new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical }
-        , ActionOption.DutyAction | ActionOption.Friendly)
-    {
-        ActionCheck = (b, m) =>
-            DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
-                ObjectHelper.CanInterrupt(tar) ||
-                (tar.HasStatus(false, StatusID.PhysicalAversion) &&
-                    tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage)))
+    public static IBaseAction LostRampage { get; } = new RoleAction(
+        ActionID.LostRampage,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical },
+        ActionOption.DutyAction
+    ) {
+        FilterForHostiles = (charas) => charas.Where(tar =>
+            ObjectHelper.CanInterrupt(tar) ||
+            (tar.HasStatus(false, StatusID.PhysicalAversion) &&
+                tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage)))
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostBurst { get; } = new RoleAction(ActionID.LostBurst
-        , new JobRole[] { JobRole.Healer, JobRole.RangedMagical }
-        , ActionOption.DutyAction | ActionOption.Friendly)
-    {
-        ActionCheck = (b, m) =>
-            DataCenter.HostileTargets.Where(o => o.DistanceToPlayer() <= 10).Any(tar =>
-                ObjectHelper.CanInterrupt(tar) ||
-                (tar.HasStatus(false, StatusID.MagicalAversion) &&
-                    tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst)))
+    public static IBaseAction LostBurst { get; } = new RoleAction(
+        ActionID.LostBurst,
+        new JobRole[] { JobRole.Healer, JobRole.RangedMagical },
+        ActionOption.DutyAction
+    ) {
+        FilterForHostiles = (charas) => charas.Where(tar =>
+            ObjectHelper.CanInterrupt(tar) ||
+            (tar.HasStatus(false, StatusID.MagicalAversion) &&
+                tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst)))
     };
 
     /// <summary>
