@@ -441,7 +441,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction
     ) {
         StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
-        ActionCheck = (b, m) => Player.HasStatus(false, StatusID.SpiritOfTheBeast) && HostileTarget.IsBossFromIcon()
+        ActionCheck = (b, m) => Player.HasStatus(false, StatusID.SpiritOfTheBeast) && HostileTarget.IsBossFromIcon() && !HostileTarget.IsDying()
     };
     
     /// <summary>
