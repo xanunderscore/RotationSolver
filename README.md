@@ -42,7 +42,7 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 
 The rotations definitions are [here](https://github.com/ArchiDog1998/FFXIVRotations)
 
-[![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2)](https://discord.gg/4fECHunam9)
+[![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2)](https://discord.gg/uB9CHJ3TPf)
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
 

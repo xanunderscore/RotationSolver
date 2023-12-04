@@ -47,7 +47,7 @@ public abstract partial class CustomRotation
         }
         catch (Exception ex)
         {
-            WhyNotValid = $"Failed to invoke the next action,please contact to \"{{0}}\".";
+            WhyNotValid = $"Failed to invoke the next action. Please contact the rotation author \"{{0}}\" on our discord.";
 
             while (ex != null)
             {
