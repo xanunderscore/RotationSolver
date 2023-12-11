@@ -20,10 +20,11 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    public static bool IsValid => Svc.Condition.Any()
+    public static unsafe bool IsValid => Svc.Condition.Any()
         && !Svc.Condition[ConditionFlag.BetweenAreas]
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
-        && Player.Available;
+        && Player.Available
+        && Player.Interactable;
 
     static bool _showedWarning, _work;
     static Exception _threadException;
