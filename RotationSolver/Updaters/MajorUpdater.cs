@@ -54,6 +54,8 @@ internal static class MajorUpdater
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
 
+            if (!DataCenter.State) return;
+
             if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction != null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
