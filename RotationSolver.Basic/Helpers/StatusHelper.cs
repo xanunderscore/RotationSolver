@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
 using ECommons.Automation;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
@@ -172,11 +173,20 @@ public static class StatusHelper
 
     private static IEnumerable<Status> GetAllStatus(this BattleChara obj, bool isFromSelf)
     {
-        if (obj == null) return Array.Empty<Status>();
+        try
+        {
+            if (obj == null) return Array.Empty<Status>();
+            if (obj.StatusList == null) return Array.Empty<Status>();
 
-        return obj.StatusList.Where(status => !isFromSelf
-                                              || status.SourceId == Player.Object.ObjectId
-                                              || status.SourceObject?.OwnerId == Player.Object.ObjectId);
+            return obj.StatusList.Where(status => !isFromSelf
+                                                  || status.SourceId == Player.Object.ObjectId
+                                                  || status.SourceObject?.OwnerId == Player.Object.ObjectId);
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Error($"Failed to {nameof(GetAllStatus)}", ex);
+            return Array.Empty<Status>();
+        }
     }
 
     /// <summary>
