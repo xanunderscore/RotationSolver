@@ -25,6 +25,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
+    static RotationSolverPlugin _rs;
 
     static readonly List<IDisposable> _dis = new();
     public static string Name => "Rotation Solver";
@@ -33,6 +34,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
+        _rs = this;
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
         IconSet.InIt();
@@ -103,7 +105,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void ChangeUITranslation()
     {
         _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
+            + _rs.GetType().Assembly.GetName().Version.ToString();
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -130,6 +132,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ECommonsMain.Dispose();
 
         Service.Config.Save();
+        _rs = null;
     }
 
     private void OnOpenConfigUi()

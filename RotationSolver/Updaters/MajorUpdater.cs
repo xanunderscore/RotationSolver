@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -60,16 +60,20 @@ internal static class MajorUpdater
                 var id = ActionUpdater.NextAction.AdjustedID;
                 PainterManager.ActionIds.Add(id == (uint)ActionID.Sprint ? 4 : id);
             }
-            ActionUpdater.UpdateActionInfo();
 
-            var canDoAction = ActionUpdater.CanDoAction();
-            MovingUpdater.UpdateCanMove(canDoAction);
-            if (canDoAction)
+            if (DataCenter.IsManual || DataCenter.State)
             {
-                RSCommands.DoAction();
-            }
+                ActionUpdater.UpdateActionInfo();
 
-            MacroUpdater.UpdateMacro();
+                var canDoAction = ActionUpdater.CanDoAction();
+                MovingUpdater.UpdateCanMove(canDoAction);
+                if (canDoAction)
+                {
+                    RSCommands.DoAction();
+                }
+
+                MacroUpdater.UpdateMacro();
+            }
 
             CloseWindow();
             OpenChest();
