@@ -107,7 +107,8 @@ public partial class BaseAction
     /// <inheritdoc/>
     public bool FindTarget(bool mustUse, byte aoeCount, out BattleChara target, out BattleChara[] affectedTargets)
     {
-        aoeCount = Math.Max(aoeCount, mustUse ? (byte)1 : AOECount);
+        if (aoeCount == 0)
+            aoeCount = mustUse ? (byte)1 : AOECount;
 
         Position = Player.Object.Position;
         var player = Player.Object;
@@ -442,7 +443,7 @@ public partial class BaseAction
         if (!CanUseTo(b)) return false;
         if (ChoiceTarget(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), mustUse) == null) return false;
 
-        if (IsSingleTarget)
+        if (IsSingleTarget || aoeCount == 1)
         {
             if (!mustUse)
             {
