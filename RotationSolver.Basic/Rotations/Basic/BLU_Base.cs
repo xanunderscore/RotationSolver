@@ -185,7 +185,7 @@ public abstract class BLU_Base : CustomRotation
             act = null;
 
             if (!OnSlot) return false;
-            return base.CanUse(out act, option | CanUseOption.IgnoreClippingCheck, gcdCountForAbility);
+            return base.CanUse(out act, option | CanUseOption.IgnoreClippingCheck, aoeCount, gcdCountForAbility);
         }
     }
 
