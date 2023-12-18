@@ -129,7 +129,7 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }) {
-        FilterForHostiles = b => b.Where(tar => !tar.HasStatus(false, (StatusID)1193))
+        TargetStatus = new[] { (StatusID)1193 },
     };
 
     /// <summary>
