@@ -2726,11 +2726,6 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    SixSidedStar = 16476,
-
-    /// <summary>
-    /// 
-    /// </summary>
     PvP_Phantomrushcombo = 55,
 
     /// <summary>
