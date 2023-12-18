@@ -182,10 +182,6 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
-            if ((target.TargetObject?.FateId() ?? 0) != 0) {
-                return false;
-            }
-
             //Removed the listed names.
             IEnumerable<string> names = Array.Empty<string>();
             if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
