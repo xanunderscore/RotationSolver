@@ -5201,6 +5201,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    LostReflect = 20711,
+
+    /// <summary>
+    /// 
+    /// </summary>
     LostRampage = 23910,
 
     /// <summary>

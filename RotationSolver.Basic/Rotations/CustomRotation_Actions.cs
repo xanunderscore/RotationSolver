@@ -1,3 +1,4 @@
+﻿using Dalamud.Logging;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -393,26 +394,18 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostSpellforge },
-        ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
-        {
-            Job.WAR
-            or Job.GNB
-            or Job.MNK
-            or Job.SAM
-            or Job.DRG
-            or Job.MCH
-            or Job.DNC
-
-            or Job.PLD
-            or Job.DRK
-            or Job.NIN
-            or Job.BRD
-            or Job.RDM
-            => true,
-
-            _ => false,
-        }),
+        ActionCheck = (b, m) => {
+            var shouldUse = false;
+            foreach (BattleChara tar in HostileTargets) {
+                if (tar.HasStatus(false, StatusID.PhysicalAversion)) {
+                    return false;
+                }
+                if (tar.HasStatus(false, StatusID.MagicalAversion)) {
+                    shouldUse = true;
+                }
+            }
+            return shouldUse;
+        },
     };
 
     /// <summary>
@@ -422,25 +415,18 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostSteelsting },
-        ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
-        {
-            Job.WHM
-            or Job.SCH
-            or Job.AST
-            or Job.SGE
-            or Job.BLM
-            or Job.SMN
-
-            or Job.PLD
-            or Job.DRK
-            or Job.NIN
-            or Job.BRD
-            or Job.RDM
-            => true,
-
-            _ => false,
-        }),
+        ActionCheck = (b, m) => {
+            var shouldUse = false;
+            foreach (BattleChara tar in HostileTargets) {
+                if (tar.HasStatus(false, StatusID.MagicalAversion)) {
+                    return false;
+                }
+                if (tar.HasStatus(false, StatusID.PhysicalAversion)) {
+                    shouldUse = true;
+                }
+            }
+            return shouldUse;
+        },
     };
 
     /// <summary>
@@ -465,7 +451,8 @@ public abstract partial class CustomRotation
     ) {
         FilterForHostiles = (charas) => charas.Where(tar =>
             ObjectHelper.CanInterrupt(tar) ||
-            (tar.HasStatus(false, StatusID.PhysicalAversion) &&
+            (tar.IsBossFromIcon() &&
+                tar.HasStatus(false, StatusID.PhysicalAversion) &&
                 tar.WillStatusEndGCD(2, 0, false, StatusID.LostRampage)))
     };
 
@@ -479,8 +466,20 @@ public abstract partial class CustomRotation
     ) {
         FilterForHostiles = (charas) => charas.Where(tar =>
             ObjectHelper.CanInterrupt(tar) ||
-            (tar.HasStatus(false, StatusID.MagicalAversion) &&
+            (tar.IsBossFromIcon() &&
+                tar.HasStatus(false, StatusID.MagicalAversion) &&
                 tar.WillStatusEndGCD(2, 0, false, StatusID.LostBurst)))
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostReflect { get; } = new BaseAction(ActionID.LostReflect, ActionOption.DutyAction) {
+        StatusProvide = new StatusID[] { StatusID.LostReflect },
+        ActionCheck = (b, m) =>
+            Player.HasStatus(true, StatusID.LostReflect) &&
+            Player.WillStatusEndGCD(1, DataCenter.Ping, true, StatusID.LostReflect),
     };
 
     /// <summary>

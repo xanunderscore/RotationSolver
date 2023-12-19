@@ -1371,6 +1371,11 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    LostReflect = 2337,
+
+    /// <summary>
+    /// 
+    /// </summary>
     LostBurst = 2558,
 
     /// <summary>

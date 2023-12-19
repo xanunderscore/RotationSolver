@@ -1,4 +1,6 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Logging;
+using Dalamud.Plugin;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
@@ -12,10 +14,10 @@ public partial class BaseAction
         5,
         (uint)ActionID.PvP_PowerfulShot,
         (uint)ActionID.PvP_BlastCharge,
-        (uint)ActionID.OgiNamikiri,
+        (uint)ActionID.MidareSetsugekka,
         (uint)ActionID.Higanbana,
-        (uint)ActionID.TenkaGoken,
-        (uint)ActionID.MidareSetsugekka
+        (uint)ActionID.OgiNamikiri,
+        (uint)ActionID.TenkaGoken
     };
     /// <summary>
     /// The user set heal ratio.
