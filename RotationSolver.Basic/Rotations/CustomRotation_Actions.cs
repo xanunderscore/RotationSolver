@@ -562,7 +562,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
     ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostFlarestar },
+        FilterForHostiles = (tars) => tars.Where(t => t.IsBossFromIcon() && t.DistanceToPlayer() < 10f && t.WillStatusEndGCD(1, 0, false, StatusID.LostFlarestar))
     };
 
     /// <summary>

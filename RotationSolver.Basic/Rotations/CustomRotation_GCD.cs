@@ -187,6 +187,7 @@ public abstract partial class CustomRotation
         if (LostSteelsting.CanUse(out act)) return true;
         if (LostRampage.CanUse(out act)) return true;
         if (LostBurst.CanUse(out act)) return true;
+        if (LostFlarestar.CanUse(out act, aoeCount: 1)) return true;
 
         if (LostBravery.CanUse(out act)) return true;
         if (LostBubble.CanUse(out act)) return true;
