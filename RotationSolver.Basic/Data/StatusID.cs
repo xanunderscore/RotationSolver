@@ -38,6 +38,11 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    Reprisal = 1193,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Addle = 1203,
 
     /// <summary>
