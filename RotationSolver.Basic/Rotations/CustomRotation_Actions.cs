@@ -572,6 +572,13 @@ public abstract partial class CustomRotation
     {
         StatusProvide = new StatusID[] { StatusID.LostSeraphStrike },
     };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostFontOfPower { get; } = new BaseAction(ActionID.LostFontOfPower, ActionOption.DutyAction) {
+        StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
+    };
     #endregion
 
     #region PvP

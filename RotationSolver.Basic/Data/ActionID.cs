@@ -5266,6 +5266,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    LostFontOfPower = 20717,
+
+    /// <summary>
+    /// 
+    /// </summary>
     LostSeraphStrike = 22354,
 
     #endregion
