@@ -587,6 +587,13 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFontOfPower { get; } = new BaseAction(ActionID.LostFontOfPower, ActionOption.DutyAction) {
         StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
     };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction BannerOfHonoredSacrifice { get; } = new BaseAction(ActionID.BannerOfHonoredSacrifice, ActionOption.DutyAction) {
+        StatusProvide = new StatusID[] { StatusID.BannerOfHonoredSacrifice },
+    };
     #endregion
 
     #region PvP

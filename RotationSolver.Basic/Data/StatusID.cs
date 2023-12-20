@@ -1376,6 +1376,11 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    BannerOfHonoredSacrifice = 2327,
+
+    /// <summary>
+    /// 
+    /// </summary>
     LostBurst = 2558,
 
     /// <summary>
