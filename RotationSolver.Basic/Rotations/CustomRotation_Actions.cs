@@ -438,8 +438,15 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction
     ) {
         StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
-        StatusNeed = new StatusID[] { StatusID.SpiritOfTheBeast },
-        ActionCheck = (b, m) => b.IsBossFromIcon() && !b.IsDying()
+        ActionCheck = (b, m) => {
+            if (b.IsBossFromIcon()) {
+                // use for FoP on bosses
+                return Player.HasStatus(true, StatusID.SpiritOfTheBeast) && !b.IsDying();
+            } else {
+                // use for instakill on tanky mobs
+                return b.FindEnemyPositional() == EnemyPositional.Rear && b.GetTimeToKill(true) >= 15;
+            }
+        }
     };
     
     /// <summary>
