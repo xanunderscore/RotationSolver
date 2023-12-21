@@ -13,11 +13,7 @@ public partial class BaseAction
     {
         5,
         (uint)ActionID.PvP_PowerfulShot,
-        (uint)ActionID.PvP_BlastCharge,
-        (uint)ActionID.MidareSetsugekka,
-        (uint)ActionID.Higanbana,
-        (uint)ActionID.OgiNamikiri,
-        (uint)ActionID.TenkaGoken
+        (uint)ActionID.PvP_BlastCharge
     };
     /// <summary>
     /// The user set heal ratio.
