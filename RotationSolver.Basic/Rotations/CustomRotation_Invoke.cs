@@ -84,9 +84,9 @@ public abstract partial class CustomRotation
             BaseAction.OtherOption &= ~CanUseOption.IgnoreClippingCheck;
         }
 
-        ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
+        ActionDefenseAreaGCD = DefenseAreaGCD(out act, Array.Empty<BattleChara>()) ? act : null;
 
-        ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
+        ActionDefenseSingleGCD = DefenseSingleGCD(out act, Array.Empty<BattleChara>()) ? act : null;
 
         EsunaStanceNorthGCD = role switch
         {
@@ -102,9 +102,9 @@ public abstract partial class CustomRotation
 
         BaseAction.OtherOption |= CanUseOption.IgnoreClippingCheck;
 
-        ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
+        ActionDefenseAreaAbility = DefenseAreaAbility(out act, Array.Empty<BattleChara>()) ? act : null;
 
-        ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
+        ActionDefenseSingleAbility = DefenseSingleAbility(out act, Array.Empty<BattleChara>()) ? act : null;
 
         EsunaStanceNorthAbility = role switch
         {
@@ -175,23 +175,21 @@ public abstract partial class CustomRotation
             return CountDownAction(countDown);
         }
 
-        var helpDefenseAOE = Service.Config.GetValue(Configuration.PluginConfigBool.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
+        var hostilesCastingAOE = Service.Config.GetValue(Configuration.PluginConfigBool.UseDefenseAbility)
+            ? DataCenter.HostileTargetsCastingAOE.AsEnumerable()
+            : Array.Empty<BattleChara>();
 
-        bool helpDefenseSingle = false;
+        IEnumerable<BattleChara> hostilesCastingST = null;
         if (ClassJob.GetJobRole() == JobRole.Healer || ClassJob.RowId == (uint)ECommons.ExcelServices.Job.PLD)
         {
-            if (DataCenter.PartyTanks.Any((tank) =>
-            {
-                var attackingTankObj = DataCenter.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
-
-                if (attackingTankObj.Count() != 1) return false;
-
-                return DataCenter.IsHostileCastingToTank;
-            })) helpDefenseSingle = true;
+            hostilesCastingST = DataCenter.HostileTargetsCastingToTank.IntersectBy(
+                DataCenter.PartyTanks.Select(t => (ulong)t.ObjectId),
+                t => t.TargetObjectId
+            );
         }
 
         BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
-        gcdAction = GCD(helpDefenseAOE, helpDefenseSingle);
+        gcdAction = GCD(hostilesCastingAOE, hostilesCastingST);
         BaseAction.OtherOption = CanUseOption.None;
 
         if (gcdAction != null)
@@ -199,14 +197,14 @@ public abstract partial class CustomRotation
             if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping
                 || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
-            if (Ability(gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(gcdAction, out IAction ability, hostilesCastingAOE, hostilesCastingST)) return ability;
 
             return gcdAction;
         }
         else
         {
             BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
-            if (Ability(Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(Addle, out IAction ability, hostilesCastingAOE, hostilesCastingST)) return ability;
             BaseAction.OtherOption = CanUseOption.None;
 
             return null;

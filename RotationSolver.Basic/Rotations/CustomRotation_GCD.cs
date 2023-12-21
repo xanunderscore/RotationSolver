@@ -5,7 +5,7 @@ namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     private static DateTime _nextTimeToHeal = DateTime.MinValue;
-    private IAction GCD(bool helpDefenseAOE, bool helpDefenseSingle)
+    private IAction GCD(IEnumerable<BattleChara> hostilesCastingAOE, IEnumerable<BattleChara> hostilesCastingST)
     {
         IAction act = DataCenter.CommandNextAction;
 
@@ -49,12 +49,12 @@ public abstract partial class CustomRotation
                 BaseAction.AutoHealCheck = false;
             }
         }
-        if (IsDefenseArea && DefenseAreaGCD(out act)) return act;
-        if (IsDefenseSingle && DefenseSingleGCD(out act)) return act;
+        if (IsDefenseArea && DefenseAreaGCD(out act, Array.Empty<BattleChara>())) return act;
+        if (IsDefenseSingle && DefenseSingleGCD(out act, Array.Empty<BattleChara>())) return act;
 
         //Auto Defense
-        if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, helpDefenseAOE) && DefenseAreaGCD(out act)) return act;
-        if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, helpDefenseSingle) && DefenseSingleGCD(out act)) return act;
+        if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, hostilesCastingAOE.Any()) && DefenseAreaGCD(out act, hostilesCastingAOE)) return act;
+        if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, hostilesCastingST.Any()) && DefenseSingleGCD(out act, hostilesCastingST)) return act;
 
         //Esuna
         if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (IsEsunaStanceNorth
@@ -250,11 +250,39 @@ public abstract partial class CustomRotation
     /// Defense single gcd.
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="hostiles">The attacking hostiles.</param>
     /// <returns></returns>
+    [RotationDesc(DescType.DefenseSingleGCD)]
+    protected virtual bool DefenseSingleGCD(out IAction act, IEnumerable<BattleChara> hostiles)
+    {
+        if (LostStoneskin.CanUse(out act)) return true;
+
+        act = null; return false;
+    }
+
+    /// <summary>
+    /// Defense single gcd.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    [Obsolete("Use DefenseSingleGCD(act, hostiles)")]
     [RotationDesc(DescType.DefenseSingleGCD)]
     protected virtual bool DefenseSingleGCD(out IAction act)
     {
-        if (LostStoneskin.CanUse(out act)) return true;
+        return DefenseSingleGCD(out act, Array.Empty<BattleChara>());
+    }
+
+
+    /// <summary>
+    /// Defense area gcd.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <param name="hostiles">The attacking hostiles.</param>
+    /// <returns></returns>
+    [RotationDesc(DescType.DefenseAreaGCD)]
+    protected virtual bool DefenseAreaGCD(out IAction act, IEnumerable<BattleChara> hostiles)
+    {
+        if (LostStoneskin2.CanUse(out act)) return true;
 
         act = null; return false;
     }
@@ -264,12 +292,11 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
+    [Obsolete("Use DefenseAreaGCD(act, hostiles)")]
     [RotationDesc(DescType.DefenseAreaGCD)]
     protected virtual bool DefenseAreaGCD(out IAction act)
     {
-        if (LostStoneskin2.CanUse(out act)) return true;
-
-        act = null; return false;
+        return DefenseAreaGCD(out act, Array.Empty<BattleChara>());
     }
 
     /// <summary>
