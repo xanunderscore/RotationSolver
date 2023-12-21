@@ -43,6 +43,11 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    Reprisal = 1193,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Feint = 1195,
 
     #region WHM

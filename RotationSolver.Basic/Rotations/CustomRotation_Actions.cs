@@ -38,7 +38,8 @@ public abstract partial class CustomRotation
             }
             return null;
         },
-        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
+        TargetStatus = new[] { StatusID.Addle },
+        TargetStatusGlobal = true,
     };
 
     /// <summary>
@@ -137,7 +138,10 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
+    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }) {
+        TargetStatus = new[] { StatusID.Reprisal },
+        TargetStatusGlobal = true
+    };
 
     /// <summary>
     /// 
@@ -160,7 +164,8 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
     {
-        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint),
+        TargetStatus = new[] { StatusID.Feint },
+        TargetStatusGlobal = true
     };
 
     /// <summary>
@@ -390,7 +395,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSpellforge },
+        TargetStatus = new StatusID[] { StatusID.LostSpellforge },
         ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
@@ -419,7 +424,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSteelsting { get; } = new BaseAction(ActionID.LostSteelsting,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSteelsting },
+        TargetStatus = new StatusID[] { StatusID.LostSteelsting },
         ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
@@ -447,7 +452,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostRampage },
+        TargetStatus = new StatusID[] { StatusID.LostRampage },
         ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
     };
 
@@ -457,7 +462,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBurst },
+        TargetStatus = new StatusID[] { StatusID.LostBurst },
         ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
     };
 
@@ -540,7 +545,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
     ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostFlarestar },
+        TargetStatus = new[] { StatusID.LostFlarestar },
+        TargetStatusGlobal = true
     };
 
     /// <summary>

@@ -87,9 +87,11 @@ public partial class BaseAction
     public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; init; } = null;
 
     /// <summary>
-    /// What status this action could put to the target.
+    /// Statuses this action will apply to the target.
     /// </summary>
     public StatusID[] TargetStatus { get; init; } = null;
+
+    public bool TargetStatusGlobal = false;
 
     internal static bool TankDefenseSelf(BattleChara _, bool mustUse)
     {
@@ -653,7 +655,7 @@ public partial class BaseAction
         if (TargetStatus == null) return true;
 
         return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(DataCenter.Job, JobConfigInt.AddDotGCDCount),
-            0, true, TargetStatus);
+            0, !TargetStatusGlobal, TargetStatus);
     }
 
     private unsafe bool CanUseTo(GameObject tar)

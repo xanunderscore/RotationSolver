@@ -690,7 +690,10 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BreathOfMagic { get; } = new BLUAction(ActionID.BreathOfMagic);
+    public static IBLUAction BreathOfMagic { get; } = new BLUAction(ActionID.BreathOfMagic) {
+        TargetStatus = new[] { StatusID.BreathOfMagic },
+        TargetStatusGlobal = true
+    };
 
     /// <summary>
     /// 
