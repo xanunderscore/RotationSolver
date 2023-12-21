@@ -62,6 +62,7 @@ internal static partial class TargetUpdater
         DataCenter.WeakenPeople.Delay(empty);
         DataCenter.HostileTargets.Delay(empty);
         DataCenter.HostileTargetsCastingAOE.Delay(empty);
+        DataCenter.HostileTargetsCastingToTank.Delay(empty);
         DataCenter.CanInterruptTargets.Delay(empty);
     }
 
