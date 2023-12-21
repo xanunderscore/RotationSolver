@@ -4,6 +4,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using ECommons.MathHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -169,6 +170,8 @@ internal static partial class TargetUpdater
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
             if (Svc.ClientState == null) return false;
+
+            if (!CheckTargetableOther(b)) return false;
 
             IEnumerable<string> names = Array.Empty<string>();
             if (OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
@@ -520,5 +523,29 @@ internal static partial class TargetUpdater
             charas.Add(b.ObjectId);
         }
         DataCenter.TreasureCharas = charas.ToArray();
+    }
+
+    // status checks that can't easily be represented in config
+    private static bool CheckTargetableOther(BattleChara b) {
+        // Labyrinth of the Ancients
+        if (Svc.ClientState.TerritoryType == 174 && b.Name.ToString() == "Thanatos") {
+            // thanatos can only be damaged by players with Astral Realignment (398)
+            return Player.Status.Any(s => s.StatusId == 398);
+            // TODO: Allagan Bomb is also invulnerable until everything else is dead, but that's harder to check
+        }
+
+        // The Puppets' Bunker
+        if (Svc.ClientState.TerritoryType == 917) {
+            // second boss has one of three buffs corresponding to an alliance letter
+            // player needs the matching buff
+            var minibossBuff = b.StatusList.Where(x => x.StatusId == 2409 || x.StatusId == 2410 || x.StatusId == 2411).FirstOrDefault();
+            // 2288 -> 2409
+            // 2289 -> 2410
+            // 2290 -> 2411
+            if (minibossBuff != null)
+                return Player.Status.Any(s => s.StatusId == minibossBuff.StatusId - 121);
+        }
+
+        return true;
     }
 }
