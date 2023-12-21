@@ -538,12 +538,14 @@ internal static partial class TargetUpdater
         if (Svc.ClientState.TerritoryType == 917) {
             // second boss has one of three buffs corresponding to an alliance letter
             // player needs the matching buff
-            var minibossBuff = b.StatusList.Where(x => x.StatusId == 2409 || x.StatusId == 2410 || x.StatusId == 2411).FirstOrDefault();
-            // 2288 -> 2409
-            // 2289 -> 2410
-            // 2290 -> 2411
-            if (minibossBuff != null)
-                return Player.Status.Any(s => s.StatusId == minibossBuff.StatusId - 121);
+            var minibossBuff = b.StatusList.FirstOrDefault(x => x.StatusId == 2409 || x.StatusId == 2410 || x.StatusId == 2411);
+            if (minibossBuff != null) {
+                // 2288 -> 2409
+                // 2289 -> 2410
+                // 2290 -> 2411
+                var playerBuff = minibossBuff.StatusId - 121;
+                return Player.Status.Any(s => s.StatusId == playerBuff);
+            }
         }
 
         return true;
