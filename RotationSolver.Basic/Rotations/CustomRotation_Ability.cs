@@ -215,7 +215,7 @@ public abstract partial class CustomRotation
                 && Player.GetHealthRatio() <= Service.Config.GetValue(DataCenter.Job, JobConfigFloat.HealthForAutoDefense)
                 && movingHere && attacked)
             {
-                if (DefenseSingleAbility(out act, hostilesCastingST)) return true;
+                if (DefenseSingleAbility(out act, Array.Empty<BattleChara>())) return true;
                 if (ArmsLength.CanUse(out act)) return true;
             }
 
