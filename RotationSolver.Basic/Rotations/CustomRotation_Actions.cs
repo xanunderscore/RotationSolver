@@ -1,4 +1,4 @@
-﻿using ECommons.ExcelServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
@@ -137,7 +137,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
+    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }) {
+        FilterForHostiles = b => b.Where(tar => !tar.HasStatus(false, StatusID.Reprisal))
+    };
 
     /// <summary>
     /// 
