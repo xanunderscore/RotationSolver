@@ -186,7 +186,7 @@ public abstract partial class CustomRotation
         if (LostFlarestar.CanUse(out act)) return true;
         if (LostRampage.CanUse(out act)) return true;
         if (LostBurst.CanUse(out act)) return true;
-        if (LostReflect.CanUse(out act)) return true;
+        if (Service.Config.GetValue(PluginConfigBool.LostReflectAutoRefresh) && LostReflect.CanUse(out act)) return true;
         if (LostBravery.CanUse(out act)) return true;
         if (LostBubble.CanUse(out act)) return true;
         if (LostShell2.CanUse(out act)) return true;
