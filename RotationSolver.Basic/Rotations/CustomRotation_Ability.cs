@@ -4,7 +4,7 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
-    private bool Ability(IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
+    private bool Ability(IAction nextGCD, out IAction act, IEnumerable<BattleChara> hostilesCastingAOE, IEnumerable<BattleChara> hostilesCastingST)
     {
         act = DataCenter.CommandNextAction;
 
@@ -39,7 +39,7 @@ public abstract partial class CustomRotation
         if (GeneralHealAbility(out act)) return true;
         if (DataCenter.IsSpeed && SpeedAbility(out act)) return true;
 
-        if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
+        if (AutoDefense(role, hostilesCastingAOE, hostilesCastingST, out act)) return true;
 
         BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
         if (MovingAbility(out act)) return true;
@@ -138,8 +138,8 @@ public abstract partial class CustomRotation
         act = null;
 
         BaseAction.OtherOption |= CanUseOption.MustUse;
-        if (DataCenter.IsDefenseArea && DefenseAreaAbility(out act)) return true;
-        if (DataCenter.IsDefenseSingle && DefenseSingleAbility(out act)) return true;
+        if (DataCenter.IsDefenseArea && DefenseAreaAbility(out act, Array.Empty<BattleChara>())) return true;
+        if (DataCenter.IsDefenseSingle && DefenseSingleAbility(out act, Array.Empty<BattleChara>())) return true;
 
         BaseAction.OtherOption &= ~CanUseOption.MustUse;
 
@@ -169,7 +169,7 @@ public abstract partial class CustomRotation
         return false;
     }
 
-    private bool AutoDefense(JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
+    private bool AutoDefense(JobRole role, IEnumerable<BattleChara> hostilesCastingAOE, IEnumerable<BattleChara> hostilesCastingST, out IAction act)
     {
         act = null;
         if (!InCombat || !HasHostilesInRange)
@@ -191,12 +191,12 @@ public abstract partial class CustomRotation
         //No using defense abilities.
         if (!Service.Config.GetValue(PluginConfigBool.UseDefenseAbility)) return false;
 
-        if (helpDefenseAOE)
+        if (hostilesCastingAOE.Any())
         {
-            if (DefenseAreaAbility(out act)) return true;
+            if (DefenseAreaAbility(out act, hostilesCastingAOE)) return true;
             if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagical)
             {
-                if (DefenseSingleAbility(out act)) return true;
+                if (DefenseSingleAbility(out act, hostilesCastingAOE)) return true;
             }
         }
 
@@ -215,18 +215,18 @@ public abstract partial class CustomRotation
                 && Player.GetHealthRatio() <= Service.Config.GetValue(DataCenter.Job, JobConfigFloat.HealthForAutoDefense)
                 && movingHere && attacked)
             {
-                if (DefenseSingleAbility(out act)) return true;
+                if (DefenseSingleAbility(out act, Array.Empty<BattleChara>())) return true;
                 if (ArmsLength.CanUse(out act)) return true;
             }
 
             //Big damage casting action.
             if (DataCenter.IsHostileCastingToTank)
             {
-                if (DefenseSingleAbility(out act)) return true;
+                if (DefenseSingleAbility(out act, hostilesCastingST)) return true;
             }
         }
 
-        if (helpDefenseSingle && DefenseSingleAbility(out act)) return true;
+        if (hostilesCastingST.Any() && DefenseSingleAbility(out act, hostilesCastingST)) return true;
 
         return false;
     }
@@ -348,9 +348,35 @@ public abstract partial class CustomRotation
     /// The ability that defenses single character.
     /// </summary>
     /// <param name="act">Result action.</param>
+    /// <param name="hostiles">Hostiles casting single-target actions/tankbusters. May be empty, e.g. during a forced DefenseSingle window.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.DefenseSingleAbility)]
+    protected virtual bool DefenseSingleAbility(out IAction act, IEnumerable<BattleChara> hostiles)
+    {
+        act = null; return false;
+    }
+
+    /// <summary>
+    /// The ability that defenses single character.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
+    [Obsolete("Use DefenseSingleAbility(act, hostiles)")]
+    [RotationDesc(DescType.DefenseSingleAbility)]
     protected virtual bool DefenseSingleAbility(out IAction act)
+    {
+        return DefenseSingleAbility(out act, Array.Empty<BattleChara>());
+    }
+
+    /// <summary>
+    /// The ability that defense area.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <param name="hostiles">Hostiles casting AOE actions. May be empty, e.g. during a forced DefenseArea window.</param>
+    /// <returns>Can we use it.</returns>
+
+    [RotationDesc(DescType.DefenseAreaAbility)]
+    protected virtual bool DefenseAreaAbility(out IAction act, IEnumerable<BattleChara> hostiles)
     {
         act = null; return false;
     }
@@ -361,10 +387,11 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
 
+    [Obsolete("Use DefenseAreaAbility(act, hostiles)")]
     [RotationDesc(DescType.DefenseAreaAbility)]
     protected virtual bool DefenseAreaAbility(out IAction act)
     {
-        act = null; return false;
+        return DefenseAreaAbility(out act, Array.Empty<BattleChara>());
     }
 
     /// <summary>
