@@ -834,6 +834,13 @@ public partial class RotationConfigWindow
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoSpeedOutOfCombat),
         }),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.UseLostActions, new ISearchable[] {
+            new CheckBoxSearchPlugin(PluginConfigBool.UseLostFlareStarOnMobs), 
+            new CheckBoxSearchPlugin(PluginConfigBool.UseLostAssassinationOnMobs,
+                new DragFloatSearchPlugin(PluginConfigFloat.LostAssassinationTimeToKill, 0.5f)),
+            new CheckBoxSearchPlugin(PluginConfigBool.LostReflectAutoRefresh)
+        }),
     };
     #endregion
 

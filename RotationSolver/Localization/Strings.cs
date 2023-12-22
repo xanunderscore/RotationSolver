@@ -792,6 +792,11 @@ internal class Strings
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_OnlyHealSelfWhenNoHealer { get; set; } = "Only Heal self When Not a healer";
+    public string ConfigWindow_Auto_UseLostActions { get; set; } = "Use Lost Actions (Bozja)";
+    public string ConfigWindow_Auto_UseLostFlareStarOnMobs { get; set; } = "Use Lost Flare Star on non-boss targets";
+    public string ConfigWindow_Auto_UseLostAssassinationOnMobs { get; set; } = "Use Lost Assassination to kill non-boss targets";
+    public string ConfigWindow_Auto_LostReflectAutoRefresh { get; set; } = "Automatically refresh Lost Reflect before it expires";
+    public string ConfigWindow_Auto_LostAssassinationTimeToKill { get; set; } = "Expected TTK required to use Lost Assassination on target";
 
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
     public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";

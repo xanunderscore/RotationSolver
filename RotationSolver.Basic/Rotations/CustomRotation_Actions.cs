@@ -1,5 +1,6 @@
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -98,7 +99,7 @@ public abstract partial class CustomRotation
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(DataCenter.Job, Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
+        ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(DataCenter.Job, JobConfigFloat.HealthSingleAbility) && InCombat,
     };
 
     /// <summary>
@@ -392,8 +393,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSpellforge },
-        ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        TargetStatus = new StatusID[] { StatusID.LostSpellforge },
+        // TargetStatusIsGlobal = true,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
             Job.WAR
@@ -421,8 +422,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSteelsting { get; } = new BaseAction(ActionID.LostSteelsting,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSteelsting },
-        ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+        TargetStatus = new StatusID[] { StatusID.LostSteelsting },
+        // TargetStatusIsGlobal = true,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
             Job.WHM
@@ -446,21 +447,53 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
-        ActionOption.DutyAction | ActionOption.Friendly)
-    {
-        StatusProvide = new StatusID[] { StatusID.LostRampage },
-        ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+    public static IBaseAction LostRampage { get; } = new RoleAction(
+        ActionID.LostRampage,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical },
+        ActionOption.DutyAction
+    ) {
+        TargetStatus = new StatusID[] { StatusID.LostRampage },
+        // TargetStatusIsGlobal = true,
+        FilterForHostiles = (targets) => targets.Where(tar =>
+            ObjectHelper.CanInterrupt(tar) ||
+            (tar.IsBossFromIcon() && tar.HasStatus(false, StatusID.PhysicalAversion)))
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
-        ActionOption.DutyAction | ActionOption.Friendly)
-    {
-        StatusProvide = new StatusID[] { StatusID.LostBurst },
-        ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+    public static IBaseAction LostBurst { get; } = new RoleAction(
+        ActionID.LostBurst,
+        new JobRole[] { JobRole.Healer, JobRole.RangedMagical },
+        ActionOption.DutyAction
+    ) {
+        TargetStatus = new StatusID[] { StatusID.LostBurst },
+        // TargetStatusIsGlobal = true,
+        FilterForHostiles = (targets) => targets.Where(tar =>
+            ObjectHelper.CanInterrupt(tar) ||
+            (tar.IsBossFromIcon() && tar.HasStatus(false, StatusID.MagicalAversion))),
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostAssassination { get; } = new RoleAction(
+        ActionID.LostAssassination,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical },
+        ActionOption.DutyAction
+    ) {
+        ActionCheck = (tar, mustUse) => {
+            if (tar.IsBossFromIcon()) {
+                // use for Lost Font of Power on bosses
+                return Player.HasStatus(true, StatusID.SpiritOfTheBeast) && !tar.IsDying();
+            } else if (Service.Config.GetValue(PluginConfigBool.UseLostAssassinationOnMobs)) {
+                // use to instakill tanky mobs
+                var ttk = Service.Config.GetValue(PluginConfigFloat.LostAssassinationTimeToKill);
+                return tar.FindEnemyPositional() == EnemyPositional.Rear && tar.GetTimeToKill(true) >= ttk;
+            }
+
+            return false;
+        }
     };
 
     /// <summary>
@@ -469,7 +502,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBravery { get; } = new BaseAction(ActionID.LostBravery,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBravery },
+        TargetStatus = new StatusID[] { StatusID.LostBravery },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -478,7 +512,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostProtect { get; } = new BaseAction(ActionID.LostProtect,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostProtect, StatusID.LostProtect2 },
+        TargetStatus = new StatusID[] { StatusID.LostProtect, StatusID.LostProtect2 },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -487,7 +522,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostShell { get; } = new BaseAction(ActionID.LostShell,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostShell, StatusID.LostShell2 },
+        TargetStatus = new StatusID[] { StatusID.LostShell, StatusID.LostShell2 },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -496,7 +532,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtect2,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostProtect2 },
+        TargetStatus = new StatusID[] { StatusID.LostProtect2 },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -505,7 +542,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShell2,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostShell2 },
+        TargetStatus = new StatusID[] { StatusID.LostShell2 },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -514,7 +552,8 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBubble { get; } = new BaseAction(ActionID.LostBubble,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBubble },
+        TargetStatus = new StatusID[] { StatusID.LostBubble },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -524,7 +563,8 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        StatusProvide = new StatusID[] { StatusID.LostStoneskin },
+        TargetStatus = new StatusID[] { StatusID.LostStoneskin },
+        // TargetStatusIsGlobal = true,
     };
 
     /// <summary>
@@ -542,7 +582,18 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
     ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostFlarestar },
+        FilterForHostiles = (tars) => tars.Where(t => t.IsBossFromIcon() || Service.Config.GetValue(PluginConfigBool.UseLostFlareStarOnMobs)),
+        TargetStatus = new StatusID[] { StatusID.LostFlarestar },
+        // TargetStatusIsGlobal = true,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostReflect { get; } = new BaseAction(ActionID.LostReflect, ActionOption.DutyAction | ActionOption.Friendly) {
+        ChoiceTarget = (tars, mustUse) => tars.FirstOrDefault(b =>
+            b.HasStatus(true, StatusID.LostReflect) &&
+            b.WillStatusEndGCD(1, 0, true, StatusID.LostReflect))
     };
 
     /// <summary>
@@ -551,7 +602,21 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSeraphStrike { get; } = new BaseAction(ActionID.LostSeraphStrike,
         ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSeraphStrike },
+        TargetStatus = new StatusID[] { StatusID.LostSeraphStrike },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostFontOfPower { get; } = new BaseAction(ActionID.LostFontOfPower, ActionOption.DutyAction) {
+        StatusProvide = new StatusID[] { StatusID.LostFontOfPower },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction BannerOfHonoredSacrifice { get; } = new BaseAction(ActionID.BannerOfHonoredSacrifice, ActionOption.DutyAction) {
+        StatusProvide = new StatusID[] { StatusID.BannerOfHonoredSacrifice },
     };
     #endregion
 

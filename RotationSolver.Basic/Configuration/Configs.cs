@@ -357,6 +357,11 @@ public enum PluginConfigBool : byte
     [Default(false)] TargetAllForFriendly,
     [Default(false)] ShowCooldownWindow,
 
+    [Default(true)] UseLostActions,
+    [Default(false)] UseLostFlareStarOnMobs,
+    [Default(true)] UseLostAssassinationOnMobs,
+    [Default(true)] LostReflectAutoRefresh,
+
     [Default(true)] RecordCastingArea,
 
     [Default(true)] AutoOffAfterCombat,
@@ -443,6 +448,7 @@ public enum PluginConfigFloat : byte
     [Default(24f, 0f, 90f), Unit(ConfigUnitType.Degree)] MoveTargetAngle,
     [Default(90f, 10f, 1800f), Unit(ConfigUnitType.Seconds)] BossTimeToKill,
     [Default(10f, 0f, 60f), Unit(ConfigUnitType.Seconds)] DyingTimeToKill,
+    [Default(15f, 0f, 1800f), Unit(ConfigUnitType.Seconds)] LostAssassinationTimeToKill,
 
     [Default(16f, 9.6f, 96f), Unit(ConfigUnitType.Pixels)] CooldownFontSize,
 

@@ -118,6 +118,10 @@ internal static class ConfigTranslation
         PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
         PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
         PluginConfigBool.OnlyHealSelfWhenNoHealer => LocalizationManager.RightLang.ConfigWindow_Auto_OnlyHealSelfWhenNoHealer,
+        PluginConfigBool.UseLostActions => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostActions,
+        PluginConfigBool.UseLostFlareStarOnMobs => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostFlareStarOnMobs,
+        PluginConfigBool.UseLostAssassinationOnMobs => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostAssassinationOnMobs,
+        PluginConfigBool.LostReflectAutoRefresh => LocalizationManager.RightLang.ConfigWindow_Auto_LostReflectAutoRefresh,
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
@@ -204,6 +208,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.AutoHealTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealTimeToKill,
         PluginConfigFloat.ProvokeDelayMin => LocalizationManager.RightLang.ConfigWindow_Auto_ProvokeDelay,
         PluginConfigFloat.HealthForGuard => LocalizationManager.RightLang.ConfigWindow_Param_HealthForGuard,
+        PluginConfigFloat.LostAssassinationTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_LostAssassinationTimeToKill,
         // target
         PluginConfigFloat.BossTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_BossTimeToKill,
         PluginConfigFloat.DyingTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_DyingTimeToKill,

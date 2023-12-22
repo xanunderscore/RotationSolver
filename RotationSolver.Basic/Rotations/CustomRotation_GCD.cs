@@ -183,22 +183,16 @@ public abstract partial class CustomRotation
     protected virtual bool EmergencyGCD(out IAction act)
     {
         #region Bozja
-        if (LostSpellforge.CanUse(out act)) return true;
-        if (LostSteelsting.CanUse(out act)) return true;
+        if (LostFlarestar.CanUse(out act)) return true;
         if (LostRampage.CanUse(out act)) return true;
         if (LostBurst.CanUse(out act)) return true;
-
+        if (Service.Config.GetValue(PluginConfigBool.LostReflectAutoRefresh) && LostReflect.CanUse(out act)) return true;
         if (LostBravery.CanUse(out act)) return true;
         if (LostBubble.CanUse(out act)) return true;
         if (LostShell2.CanUse(out act)) return true;
         if (LostShell.CanUse(out act)) return true;
         if (LostProtect2.CanUse(out act)) return true;
         if (LostProtect.CanUse(out act)) return true;
-
-        //Add your own logic here.
-        //if (LostFlarestar.CanUse(out act)) return true;
-        //if (LostSeraphStrike.CanUse(out act)) return true;
-
         #endregion
 
         #region PvP

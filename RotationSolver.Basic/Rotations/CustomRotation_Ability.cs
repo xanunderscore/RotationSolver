@@ -433,6 +433,7 @@ public abstract partial class CustomRotation
         if (VariantSpiritDart2.CanUse(out act, CanUseOption.MustUse)) return true;
         if (VariantRampart.CanUse(out act)) return true;
         if (VariantRampart2.CanUse(out act)) return true;
+        if (LostAssassination.CanUse(out act)) return true;
         return false;
     }
 }
