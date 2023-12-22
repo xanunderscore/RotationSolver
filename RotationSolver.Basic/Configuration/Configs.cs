@@ -358,7 +358,6 @@ public enum PluginConfigBool : byte
     [Default(false)] ShowCooldownWindow,
 
     [Default(true)] UseLostActions,
-    [Default(true)] UseLostFlareStarOnBosses,
     [Default(false)] UseLostFlareStarOnMobs,
     [Default(true)] UseLostAssassinationOnMobs,
     [Default(true)] LostReflectAutoRefresh,

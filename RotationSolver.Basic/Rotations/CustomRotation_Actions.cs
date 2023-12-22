@@ -580,9 +580,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
     ActionOption.DutyAction)
     {
-        FilterForHostiles = (tars) => tars.Where(t =>
-            Service.Config.GetValue(PluginConfigBool.UseLostFlareStarOnMobs) ||
-            (t.IsBossFromIcon() && Service.Config.GetValue(PluginConfigBool.UseLostFlareStarOnBosses))),
+        FilterForHostiles = (tars) => tars.Where(t => t.IsBossFromIcon() || Service.Config.GetValue(PluginConfigBool.UseLostFlareStarOnMobs)),
         TargetStatus = new StatusID[] { StatusID.LostFlarestar },
         // TargetStatusIsGlobal = true,
     };

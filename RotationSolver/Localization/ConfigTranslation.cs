@@ -119,7 +119,6 @@ internal static class ConfigTranslation
         PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
         PluginConfigBool.OnlyHealSelfWhenNoHealer => LocalizationManager.RightLang.ConfigWindow_Auto_OnlyHealSelfWhenNoHealer,
         PluginConfigBool.UseLostActions => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostActions,
-        PluginConfigBool.UseLostFlareStarOnBosses => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostFlareStarOnBosses,
         PluginConfigBool.UseLostFlareStarOnMobs => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostFlareStarOnMobs,
         PluginConfigBool.UseLostAssassinationOnMobs => LocalizationManager.RightLang.ConfigWindow_Auto_UseLostAssassinationOnMobs,
         PluginConfigBool.LostReflectAutoRefresh => LocalizationManager.RightLang.ConfigWindow_Auto_LostReflectAutoRefresh,
