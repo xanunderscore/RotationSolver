@@ -48,6 +48,9 @@ public class OtherConfiguration
         { (uint) ActionID.SteelCyclone, 2},
         { (uint) ActionID.VariantSpiritDart, 1 },
         { (uint) ActionID.VariantSpiritDart2, 1 },
+        { (uint) ActionID.LostRampage, 1 },
+        { (uint) ActionID.LostBurst, 1 },
+        { (uint) ActionID.LostFlarestar, 1 }
     };
 
     public static Dictionary<uint, float> ActionTTK = new()

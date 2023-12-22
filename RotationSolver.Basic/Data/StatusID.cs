@@ -1336,12 +1336,22 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
-    LostSpellforge = 2338,
+    SpiritOfTheBeast = 2324,
 
     /// <summary>
     /// 
     /// </summary>
-    MagicalAversion = 2370,
+    BannerOfHonoredSacrifice = 2327,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostReflect = 2337,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSpellforge = 2338,
 
     /// <summary>
     /// 
@@ -1351,7 +1361,17 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    LostFontOfPower = 2346,
+
+    /// <summary>
+    /// 
+    /// </summary>
     PhysicalAversion = 2369,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MagicalAversion = 2370,
 
     /// <summary>
     /// 
