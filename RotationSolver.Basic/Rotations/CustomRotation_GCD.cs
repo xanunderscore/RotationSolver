@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Configuration;
+﻿using Dalamud.Logging;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -255,9 +256,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.DefenseSingleGCD)]
     protected virtual bool DefenseSingleGCD(out IAction act, IEnumerable<BattleChara> hostiles)
     {
-        if (LostStoneskin.CanUse(out act)) return true;
-
-        act = null; return false;
+        return DefenseSingleGCD(out act);
     }
 
     /// <summary>
@@ -265,11 +264,12 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    [Obsolete("Use DefenseSingleGCD(act, hostiles)")]
     [RotationDesc(DescType.DefenseSingleGCD)]
     protected virtual bool DefenseSingleGCD(out IAction act)
     {
-        return DefenseSingleGCD(out act, Array.Empty<BattleChara>());
+        if (LostStoneskin.CanUse(out act)) return true;
+
+        act = null; return false;
     }
 
 
@@ -282,9 +282,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.DefenseAreaGCD)]
     protected virtual bool DefenseAreaGCD(out IAction act, IEnumerable<BattleChara> hostiles)
     {
-        if (LostStoneskin2.CanUse(out act)) return true;
-
-        act = null; return false;
+        return DefenseAreaGCD(out act);
     }
 
     /// <summary>
@@ -292,11 +290,12 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    [Obsolete("Use DefenseAreaGCD(act, hostiles)")]
     [RotationDesc(DescType.DefenseAreaGCD)]
     protected virtual bool DefenseAreaGCD(out IAction act)
     {
-        return DefenseAreaGCD(out act, Array.Empty<BattleChara>());
+        if (LostStoneskin2.CanUse(out act)) return true;
+
+        act = null; return false;
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -55,14 +56,14 @@ internal static partial class TargetUpdater
             = DataCenter.AllianceMembers
             = DataCenter.AllianceTanks
             = DataCenter.DyingPeople
+            = DataCenter.HostileTargetsCastingAOE
+            = DataCenter.HostileTargetsCastingToTank
             = empty;
 
         DataCenter.DeathPeopleAll.Delay(empty);
         DataCenter.DeathPeopleParty.Delay(empty);
         DataCenter.WeakenPeople.Delay(empty);
         DataCenter.HostileTargets.Delay(empty);
-        DataCenter.HostileTargetsCastingAOE.Delay(empty);
-        DataCenter.HostileTargetsCastingToTank.Delay(empty);
         DataCenter.CanInterruptTargets.Delay(empty);
     }
 
@@ -157,8 +158,8 @@ internal static partial class TargetUpdater
         DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
 
-        DataCenter.HostileTargetsCastingToTank.Delay(DataCenter.HostileTargets.Where(IsHostileCastingTank));
-        DataCenter.HostileTargetsCastingAOE.Delay(DataCenter.HostileTargets.Where(IsHostileCastingArea));
+        DataCenter.HostileTargetsCastingToTank = DataCenter.HostileTargets.Where(IsHostileCastingTank);
+        DataCenter.HostileTargetsCastingAOE = DataCenter.HostileTargets.Where(IsHostileCastingArea);
 
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.HostileTargetsCastingToTank.Any();
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.HostileTargetsCastingAOE.Any();
