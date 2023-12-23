@@ -348,7 +348,7 @@ public abstract partial class CustomRotation
     /// The ability that defenses single character.
     /// </summary>
     /// <param name="act">Result action.</param>
-    /// <param name="hostiles">Hostiles casting single-target actions/tankbusters. Empty during a forced DefenseSingle window.</param>
+    /// <param name="hostiles">Hostiles casting single-target actions (tankbusters). If the player is on a DPS job, this list may also include hostiles casting AOE actions (raidwides). Empty during a forced DefenseSingle window.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.DefenseSingleAbility)]
     protected virtual bool DefenseSingleAbility(out IAction act, IEnumerable<BattleChara> hostiles)
