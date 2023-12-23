@@ -1,5 +1,4 @@
-﻿using Dalamud.Logging;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
