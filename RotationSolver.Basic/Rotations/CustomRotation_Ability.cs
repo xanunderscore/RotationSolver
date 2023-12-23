@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Configuration;
+﻿using Dalamud.Logging;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -348,12 +349,12 @@ public abstract partial class CustomRotation
     /// The ability that defenses single character.
     /// </summary>
     /// <param name="act">Result action.</param>
-    /// <param name="hostiles">Hostiles casting single-target actions/tankbusters. May be empty, e.g. during a forced DefenseSingle window.</param>
+    /// <param name="hostiles">Hostiles casting single-target actions/tankbusters. Empty during a forced DefenseSingle window.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.DefenseSingleAbility)]
     protected virtual bool DefenseSingleAbility(out IAction act, IEnumerable<BattleChara> hostiles)
     {
-        act = null; return false;
+        return DefenseSingleAbility(out act);
     }
 
     /// <summary>
@@ -361,22 +362,8 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
-    [Obsolete("Use DefenseSingleAbility(act, hostiles)")]
     [RotationDesc(DescType.DefenseSingleAbility)]
     protected virtual bool DefenseSingleAbility(out IAction act)
-    {
-        return DefenseSingleAbility(out act, Array.Empty<BattleChara>());
-    }
-
-    /// <summary>
-    /// The ability that defense area.
-    /// </summary>
-    /// <param name="act">Result action.</param>
-    /// <param name="hostiles">Hostiles casting AOE actions. May be empty, e.g. during a forced DefenseArea window.</param>
-    /// <returns>Can we use it.</returns>
-
-    [RotationDesc(DescType.DefenseAreaAbility)]
-    protected virtual bool DefenseAreaAbility(out IAction act, IEnumerable<BattleChara> hostiles)
     {
         act = null; return false;
     }
@@ -385,13 +372,25 @@ public abstract partial class CustomRotation
     /// The ability that defense area.
     /// </summary>
     /// <param name="act">Result action.</param>
+    /// <param name="hostiles">Hostiles casting AOE actions. Empty during a forced DefenseArea window.</param>
     /// <returns>Can we use it.</returns>
 
-    [Obsolete("Use DefenseAreaAbility(act, hostiles)")]
+    [RotationDesc(DescType.DefenseAreaAbility)]
+    protected virtual bool DefenseAreaAbility(out IAction act, IEnumerable<BattleChara> hostiles)
+    {
+        return DefenseAreaAbility(out act);
+    }
+
+    /// <summary>
+    /// The ability that defense area.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
+
     [RotationDesc(DescType.DefenseAreaAbility)]
     protected virtual bool DefenseAreaAbility(out IAction act)
     {
-        return DefenseAreaAbility(out act, Array.Empty<BattleChara>());
+        act = null; return false;
     }
 
     /// <summary>

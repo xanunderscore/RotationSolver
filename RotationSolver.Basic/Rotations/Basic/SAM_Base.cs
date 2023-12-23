@@ -388,9 +388,12 @@ public abstract class SAM_Base : CustomRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ThirdEye)]
-    protected override bool DefenseSingleAbility(out IAction act)
+    protected override bool DefenseSingleAbility(out IAction act, IEnumerable<BattleChara> hostiles)
     {
-        if (ThirdEye.CanUse(out act)) return true;
+        // Third Eye's buff duration is 4s
+        if (!hostiles.Any() || hostiles.Any(h => h.RemainingCastTime() < 4))
+            if (ThirdEye.CanUse(out act))
+                return true;
         return base.DefenseSingleAbility(out act);
     }
 }

@@ -134,6 +134,11 @@ public static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
+    public static float RemainingCastTime(this BattleChara b)
+    {
+        return b.IsCasting ? b.TotalCastTime - b.CurrentCastTime : 999.99f;
+    }
+
     /// <summary>
     /// Is object a dummy.
     /// </summary>

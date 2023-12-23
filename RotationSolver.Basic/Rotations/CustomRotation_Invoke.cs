@@ -179,7 +179,7 @@ public abstract partial class CustomRotation
             ? DataCenter.HostileTargetsCastingAOE.AsEnumerable()
             : Array.Empty<BattleChara>();
 
-        IEnumerable<BattleChara> hostilesCastingST = null;
+        IEnumerable<BattleChara> hostilesCastingST = Array.Empty<BattleChara>();
         if (ClassJob.GetJobRole() == JobRole.Healer || ClassJob.RowId == (uint)ECommons.ExcelServices.Job.PLD)
         {
             hostilesCastingST = DataCenter.HostileTargetsCastingToTank.IntersectBy(
