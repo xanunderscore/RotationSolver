@@ -533,10 +533,18 @@ internal static partial class TargetUpdater
     // status checks that can't easily be represented in config
     private static bool CheckTargetableOther(BattleChara b) {
         // Labyrinth of the Ancients
-        if (Svc.ClientState.TerritoryType == 174 && b.Name.ToString() == "Thanatos") {
-            // thanatos can only be damaged by players with Astral Realignment (398)
-            return Player.Status.Any(s => s.StatusId == 398);
-            // TODO: Allagan Bomb is also invulnerable until everything else is dead, but that's harder to check
+        if (Svc.ClientState.TerritoryType == 174) {
+            // Thanatos
+            if (b.DataId == 2350) {
+                // can only be damaged by players with Astral Realignment
+                return Player.Status.Any(s => s.StatusId == 398);
+            }
+
+            // Allagan Bomb
+            if (b.DataId == 2407) {
+                // can only be damaged when every other enemy is dead
+                return DataCenter.NumberOfAllHostilesInMaxRange == 1;
+            }
         }
 
         // The Puppets' Bunker
