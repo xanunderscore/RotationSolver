@@ -450,7 +450,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostRampage { get; } = new RoleAction(
         ActionID.LostRampage,
         new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedPhysical },
-        ActionOption.DutyAction
+        ActionOption.DutyAction | ActionOption.Eot
     ) {
         TargetStatus = new StatusID[] { StatusID.LostRampage },
         // TargetStatusIsGlobal = true,
@@ -465,7 +465,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBurst { get; } = new RoleAction(
         ActionID.LostBurst,
         new JobRole[] { JobRole.Healer, JobRole.RangedMagical },
-        ActionOption.DutyAction
+        ActionOption.DutyAction | ActionOption.Eot
     ) {
         TargetStatus = new StatusID[] { StatusID.LostBurst },
         // TargetStatusIsGlobal = true,
@@ -580,7 +580,7 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
-    ActionOption.DutyAction)
+    ActionOption.DutyAction | ActionOption.Dot)
     {
         FilterForHostiles = (tars) => tars.Where(t => t.IsBossFromIcon() || Service.Config.GetValue(PluginConfigBool.UseLostFlareStarOnMobs)),
         TargetStatus = new StatusID[] { StatusID.LostFlarestar },
