@@ -220,6 +220,7 @@ internal class Strings
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Previously engaged targets or all targets that are in range\n(engages on countdown timer and resets when out of combat)";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Previously engaged targets (engages on countdown timer)";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
+    public string ConfigWindow_Param_TargetAllSolo { get; set; } = "Force 'All targets' behavior while in solo duties.";
     public string ConfigWindow_Param_OnlyAttackInEnemyList { get; set; } = "Only attack the targets in enemy list.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AoE to attack more mobs.";

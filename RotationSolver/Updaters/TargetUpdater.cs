@@ -183,7 +183,11 @@ internal static partial class TargetUpdater
             return tarFateId == 0 || tarFateId == fateId;
         });
 
-        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false))
+        if (type == TargetHostileType.AllTargetsCanAttack
+            || Service.CountDownTime > 0
+            || (DataCenter.Territory?.IsPvpZone ?? false)
+            || Service.Config.GetValue(PluginConfigBool.TargetAllSolo) && DataCenter.InSoloDuty()
+            )
         {
             return allAttackableTargets;
         }

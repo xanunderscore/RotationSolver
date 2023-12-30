@@ -280,6 +280,7 @@ public enum PluginConfigBool : byte
 
     [Default(true)] RaisePlayerByCasting,
     [Default(true)] RaiseBrinkOfDeath,
+    [Default(true)] TargetAllSolo,
     [Default(true)] AddEnemyListToHostile,
     [Default(false)] OnlyAttackInEnemyList,
     [Default(false)] UseTinctures,
