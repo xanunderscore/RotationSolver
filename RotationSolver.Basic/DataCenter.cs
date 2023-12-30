@@ -28,7 +28,7 @@ internal static class DataCenter
         }
     }
 
-    private static readonly HashSet<uint> _forayAreas = new() {
+    internal static readonly HashSet<uint> _forayAreas = new() {
         // Eureka zones
         732, 763, 795, 827,
 
@@ -133,6 +133,12 @@ internal static class DataCenter
         return Svc.Condition[ConditionFlag.BoundByDuty56]
             && PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1
             && !_forayAreas.Contains(Territory.RowId);
+    }
+
+    internal static bool InForayOverworld() {
+        return _forayAreas.Contains(Territory.RowId)
+            // 2415: Duties as Assigned, applied during CEs and raids
+            && !StatusHelper.HasStatus(Player.Object, false, (StatusID)2415);
     }
 
     private static List<NextAct> NextActs = new();

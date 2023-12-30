@@ -593,7 +593,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostReflect { get; } = new BaseAction(ActionID.LostReflect, ActionOption.DutyAction | ActionOption.Friendly) {
         ChoiceTarget = (tars, mustUse) => tars.FirstOrDefault(b =>
             b.HasStatus(true, StatusID.LostReflect) &&
-            b.WillStatusEndGCD(1, 0, true, StatusID.LostReflect))
+            b.WillStatusEndGCD(1, DataCenter.Ping, true, StatusID.LostReflect))
     };
 
     /// <summary>
