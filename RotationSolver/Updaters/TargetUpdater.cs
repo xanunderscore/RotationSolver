@@ -183,12 +183,13 @@ internal static partial class TargetUpdater
             return tarFateId == 0 || tarFateId == fateId;
         });
 
-        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false))
+        if (type == TargetHostileType.All || Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false))
         {
             return allAttackableTargets;
         }
 
         uint[] ids = GetEnemies();
+        var partyIds = DataCenter.PartyMembers.Select(p => (ulong)p.ObjectId);
         var hostiles = allAttackableTargets.Where(t =>
         {
             if (Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile))
@@ -206,10 +207,16 @@ internal static partial class TargetUpdater
 
             if (t.IsTopPriorityHostile()) return true;
 
-            return t.TargetObject is BattleChara;
+            if (t.TargetObject is BattleChara) {
+                if (type == TargetHostileType.HostileParty)
+                    return partyIds.Contains(t.TargetObjectId);
+                return true;
+            }
+
+            return false;
         });
 
-        if (type == TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack)
+        if (type == TargetHostileType.HostileOrAll)
         {
             if (!hostiles.Any()) hostiles = allAttackableTargets;
         }
@@ -225,7 +232,7 @@ internal static partial class TargetUpdater
         var addon = addons.FirstOrDefault();
         var enemy = (AddonEnemyList*)addon;
 
-        var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
+        var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[21];
         List<uint> list = new(enemy->EnemyCount);
         for (var i = 0; i < enemy->EnemyCount; i++)
         {

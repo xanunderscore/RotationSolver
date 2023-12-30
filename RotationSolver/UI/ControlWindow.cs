@@ -186,9 +186,10 @@ internal class ControlWindow : CtrlWindow
             {
                 ImGui.Text(DataCenter.RightNowTargetToHostileType switch
                 {
-                    TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
-                    TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-                    TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+                    TargetHostileType.All => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
+                    TargetHostileType.HostileOrAll => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
+                    TargetHostileType.Hostile => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+                    TargetHostileType.HostileParty => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType4,
                     _ => string.Empty,
                 });
 

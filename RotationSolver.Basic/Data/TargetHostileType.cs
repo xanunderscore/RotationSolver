@@ -6,17 +6,22 @@
 public enum TargetHostileType : byte
 {
     /// <summary>
-    /// All
+    /// All enemies
     /// </summary>
-    AllTargetsCanAttack,
+    All,
 
     /// <summary>
-    /// Have target then all.
+    /// Hostile enemies, or all enemies if none are hostile
     /// </summary>
-    TargetsHaveTargetOrAllTargetsCanAttack,
+    HostileOrAll,
 
     /// <summary>
-    /// Have target.
+    /// Hostile enemies
     /// </summary>
-    TargetsHaveTarget,
+    Hostile,
+
+    /// <summary>
+    /// Hostile enemies targeting party members
+    /// </summary>
+    HostileParty,
 }

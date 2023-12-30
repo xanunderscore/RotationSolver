@@ -877,7 +877,8 @@ public partial class RotationConfigWindow
         new DragIntSearchJob(JobConfigInt.HostileType, () => new string []{
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3
+            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType4
         })
         {
             PvPFilter = JobFilter.NoJob,
