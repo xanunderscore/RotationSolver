@@ -225,7 +225,7 @@ internal static partial class TargetUpdater
         var addon = addons.FirstOrDefault();
         var enemy = (AddonEnemyList*)addon;
 
-        var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
+        var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[21];
         List<uint> list = new(enemy->EnemyCount);
         for (var i = 0; i < enemy->EnemyCount; i++)
         {
